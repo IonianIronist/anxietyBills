@@ -32,6 +32,7 @@ def main(connection, executor):
         elif rep == "5":
             file = input("Input file name\n--->")
             fn.file_insertion(executor, file)
+            connection.commit()
         elif rep == "q":
             print("DON'T PANIC")
             break
@@ -56,13 +57,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
     if args.insert:
         transaction = args.insert.split(',')
-        if fn.date_check(transaction[0]) and fn.amount_check(transaction[1]) and transaction.len() == 3:
+        if fn.date_check(transaction[0]) and fn.amount_check(transaction[1]) and len(transaction) == 3:
             fn.insert_into_transactions(exe, transaction[0], float(transaction[1]), transaction[2])
+            conn.commit()
+            sys.exit()
         else:
             print("Wrong transaction input")
             sys.exit()
     elif args.fileinsertion:
         fn.file_insertion(exe, args.fileinsertion)
+        conn.commit()
         sys.exit()
     elif args.view:
         print("(ID, DATE, AMOUNT, DESCRIPTION)")
